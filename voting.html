@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CKT-UTAS Voting System</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="voting.css">
+</head>
+
+<body>
+  <div class="auth-status">
+    <i class="fas fa-user-circle"></i>
+    <span id="auth-status-text">Not logged in</span>
+  </div>
+
+  <div class="container">
+    <!-- Progress Steps -->
+    <div class="progress-steps">
+      <div class="step" id="step1">
+        <div class="step-number">1</div>
+        <div class="step-label">Login</div>
+      </div>
+      <div class="step" id="step2">
+        <div class="step-number">2</div>
+        <div class="step-label">Verify</div>
+      </div>
+      <div class="step" id="step3">
+        <div class="step-number">3</div>
+        <div class="step-label">Vote</div>
+      </div>
+      <div class="step" id="step4">
+        <div class="step-number">4</div>
+        <div class="step-label">Confirm</div>
+      </div>
+      <div class="step" id="step5">
+        <div class="step-number">5</div>
+        <div class="step-label">Complete</div>
+      </div>
+    </div>
+
+    <!-- Login Page -->
+    <div class="page active" id="login-page">
+      <div class="voting-card">
+        <h1>Student Login</h1>
+        <p style="text-align: center; margin-bottom: 1.5rem; color: var(--light-text);">
+          Please enter your student ID and the password provided by the election committee
+        </p>
+
+        <form id="login-form">
+          <div class="form-group">
+            <label for="student-id">Student ID Number</label>
+            <input type="text" id="student-id" placeholder="e.g. 2021050342" required>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Voting Password</label>
+            <input type="password" id="password" placeholder="Enter your voting password" required>
+          </div>
+
+          <button type="submit" class="btn">Login to Vote</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Verification Page -->
+    <div class="page" id="verify-page">
+      <div class="voting-card">
+        <h1>Verify Your Details</h1>
+        <p style="text-align: center; margin-bottom: 1.5rem; color: var(--light-text);">
+          Please confirm your information before proceeding to vote
+        </p>
+
+        <div style="background: rgba(0, 0, 0, 0.03); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+          <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Student Photo"
+              style="width: 80px; height: 80px; border-radius: 50%; margin-right: 1.5rem; border: 3px solid var(--border-color);">
+            <div>
+              <h3 style="margin-bottom: 0.3rem;" id="verify-name">John Mensah</h3>
+              <p style="color: var(--light-text);" id="verify-program">Computer Science (BSc.)</p>
+              <p style="color: var(--light-text);" id="verify-id">2021050342</p>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div>
+              <p style="color: var(--light-text); font-size: 0.9rem;">Level</p>
+              <p style="font-weight: 500;" id="verify-level">300</p>
+            </div>
+            <div>
+              <p style="color: var(--light-text); font-size: 0.9rem;">College</p>
+              <p style="font-weight: 500;" id="verify-college">Computing</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem;">
+          <button class="btn btn-warning" id="btn-not-me">This isn't me</button>
+          <button class="btn btn-success" id="btn-confirm">Confirm & Proceed</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Voting Page -->
+    <div class="page" id="vote-page">
+      <div class="voting-card">
+        <h1>Cast Your Vote</h1>
+        <p style="text-align: center; margin-bottom: 1.5rem; color: var(--light-text);">
+          Select your preferred candidate for each position (Step <span id="current-step">1</span> of <span
+            id="total-steps">3</span>)
+        </p>
+
+        <!-- Progress Indicator -->
+        <div class="progress-indicator" style="margin-bottom: 2rem;">
+          <div class="progress-bar" style="height: 4px; background: var(--border-color); border-radius: 2px;">
+            <div class="progress-fill"
+              style="height: 100%; background: var(--success-color); width: 0; transition: width 0.3s ease;"></div>
+          </div>
+          <div class="portfolio-names"
+            style="display: flex; justify-content: space-between; margin-top: 0.5rem; color: var(--light-text); font-size: 0.9rem;">
+            <span class="portfolio-name active">President</span>
+            <span class="portfolio-name">Vice President</span>
+            <span class="portfolio-name">Secretary</span>
+          </div>
+        </div>
+
+        <!-- Portfolio Sections -->
+        <div id="portfolio-container" style="position: relative;">
+          <!-- President Portfolio -->
+          <div class="portfolio-section active" data-portfolio="president">
+            <h2>President</h2>
+            <div class="candidates-row">
+              <div class="candidate-card">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Candidate" class="candidate-avatar">
+                <div class="candidate-info">
+                  <div class="candidate-name">John Mensah</div>
+                  <div class="candidate-department">Computer Science</div>
+                </div>
+                <div class="selected-icon"><i class="fas fa-check-circle"></i></div>
+              </div>
+              <div class="candidate-card">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Candidate" class="candidate-avatar">
+                <div class="candidate-info">
+                  <div class="candidate-name">Ama Asante</div>
+                  <div class="candidate-department">Business Admin</div>
+                </div>
+                <div class="selected-icon"><i class="fas fa-check-circle"></i></div>
+              </div>
+              <div class="candidate-card">
+                <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Candidate" class="candidate-avatar">
+                <div class="candidate-info">
+                  <div class="candidate-name">Kwame Osei</div>
+                  <div class="candidate-department">Engineering</div>
+                </div>
+                <div class="selected-icon"><i class="fas fa-check-circle"></i></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Vice President Portfolio -->
+          <div class="portfolio-section" data-portfolio="vice-president">
+            <h2>Vice President</h2>
+            <div class="candidates-row">
+              <div class="candidate-card">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Candidate" class="candidate-avatar">
+                <div class="candidate-info">
+                  <div class="candidate-name">John Mensah</div>
+                  <div class="candidate-department">Computer Science</div>
+                </div>
+                <div class="selected-icon"><i class="fas fa-check-circle"></i></div>
+              </div>
+              <div class="candidate-card">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Candidate" class="candidate-avatar">
+                <div class="candidate-info">
+                  <div class="candidate-name">Ama Asante</div>
+                  <div class="candidate-department">Business Admin</div>
+                </div>
+                <div class="selected-icon"><i class="fas fa-check-circle"></i></div>
+              </div>
+              <div class="candidate-card">
+                <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Candidate" class="candidate-avatar">
+                <div class="candidate-info">
+                  <div class="candidate-name">Kwame Osei</div>
+                  <div class="candidate-department">Engineering</div>
+                </div>
+                <div class="selected-icon"><i class="fas fa-check-circle"></i></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Secretary Portfolio -->
+          <div class="portfolio-section" data-portfolio="secretary">
+            <h2>Secretary</h2>
+            <div class="candidates-row">
+              <div class="candidate-card">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Candidate" class="candidate-avatar">
+                <div class="candidate-info">
+                  <div class="candidate-name">John Mensah</div>
+                  <div class="candidate-department">Computer Science</div>
+                </div>
+                <div class="selected-icon"><i class="fas fa-check-circle"></i></div>
+              </div>
+              <div class="candidate-card">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Candidate" class="candidate-avatar">
+                <div class="candidate-info">
+                  <div class="candidate-name">Ama Asante</div>
+                  <div class="candidate-department">Business Admin</div>
+                </div>
+                <div class="selected-icon"><i class="fas fa-check-circle"></i></div>
+              </div>
+              <div class="candidate-card">
+                <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Candidate" class="candidate-avatar">
+                <div class="candidate-info">
+                  <div class="candidate-name">Kwame Osei</div>
+                  <div class="candidate-department">Engineering</div>
+                </div>
+                <div class="selected-icon"><i class="fas fa-check-circle"></i></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="navigation-buttons" style="display: flex; justify-content: space-between; margin-top: 1rem;">
+          <button class="btn btn-warning" id="btn-prev" style="margin-right: 20px;" disabled>Previous</button>
+          <button class="btn btn-success" id="btn-next">Next Portfolio</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confirmation Page -->
+    <div class="page" id="confirm-page">
+      <div class="voting-card">
+        <div class="confirmation-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <h1>Confirm Your Votes</h1>
+
+        <div class="confirmation-message">
+          <p>Please review your selections before final submission.</p>
+          <p style="color: var(--light-text); margin-top: 0.5rem;">You cannot change your votes after submission.</p>
+        </div>
+
+        <div id="vote-summary" style="margin-bottom: 2rem;">
+          <!-- Vote summary will be inserted here -->
+        </div>
+
+        <div style="display: flex; gap: 1rem;">
+          <button class="btn btn-warning" id="btn-edit-votes">Edit Votes</button>
+          <button class="btn btn-success" id="btn-confirm-votes">Confirm & Submit</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Completion Page -->
+    <div class="page" id="complete-page">
+      <div class="voting-card">
+        <div class="confirmation-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <h1>Voting Complete!</h1>
+
+        <div class="confirmation-message">
+          <p>Thank you for participating in the CKT-UTAS elections.</p>
+          <p>Your votes have been successfully submitted.</p>
+        </div>
+
+        <div style="text-align: center; margin: 2rem 0;">
+          <i class="fas fa-lock" style="color: var(--success-color); font-size: 1.5rem;"></i>
+          <p style="margin-top: 0.5rem; color: var(--light-text);">Your votes are anonymous and secure</p>
+        </div>
+
+        <div class="logout-timer">
+          <p>You will be automatically logged out in <span id="countdown">30</span> seconds</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // ========== PAGE ELEMENTS ==========
+      const pages = {
+        login: document.getElementById('login-page'),
+        verify: document.getElementById('verify-page'),
+        vote: document.getElementById('vote-page'),
+        confirm: document.getElementById('confirm-page'),
+        complete: document.getElementById('complete-page')
+      };
+
+      const steps = {
+        step1: document.getElementById('step1'),
+        step2: document.getElementById('step2'),
+        step3: document.getElementById('step3'),
+        step4: document.getElementById('step4'),
+        step5: document.getElementById('step5')
+      };
+
+      let currentPage = 'login';
+      let countdownInterval;
+      let logoutTimer = 30;
+
+      const portfolios = document.querySelectorAll('.portfolio-section');
+      const portfolioNames = document.querySelectorAll('.portfolio-name');
+      const progressFill = document.querySelector('.progress-fill');
+      const btnNext = document.getElementById('btn-next');
+      const btnPrev = document.getElementById('btn-prev');
+      const currentStepText = document.getElementById('current-step');
+      const totalSteps = portfolios.length;
+      let currentPortfolioIndex = 0;
+
+      document.getElementById('total-steps').textContent = totalSteps;
+
+      // ========== INIT ==========
+      initLogin();
+      initVoting();
+      updatePortfolioUI();
+
+      // ========== LOGIN FLOW ==========
+      function initLogin() {
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+          e.preventDefault();
+          simulateLogin();
+        });
+
+        document.getElementById('btn-not-me').addEventListener('click', logout);
+        document.getElementById('btn-confirm').addEventListener('click', () => {
+          navigateTo('vote');
+          updateProgressSteps(3);
+        });
+
+        document.getElementById('btn-edit-votes').addEventListener('click', () => {
+          navigateTo('vote');
+          updateProgressSteps(3);
+        });
+
+        document.getElementById('btn-confirm-votes').addEventListener('click', () => {
+          navigateTo('complete');
+          updateProgressSteps(5);
+          startLogoutCountdown();
+        });
+      }
+
+      function simulateLogin() {
+        const btn = document.querySelector('#login-form button');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
+
+        setTimeout(() => {
+          updateAuthStatus(true);
+          navigateTo('verify');
+          updateProgressSteps(2);
+          btn.disabled = false;
+          btn.textContent = 'Login to Vote';
+        }, 1500);
+      }
+
+      function updateAuthStatus(authenticated) {
+        const authText = document.getElementById('auth-status-text');
+        const authIcon = document.querySelector('.auth-status i');
+        if (authenticated) {
+          authText.textContent = 'Logged in';
+          authIcon.className = 'fas fa-user-check';
+        } else {
+          authText.textContent = 'Not logged in';
+          authIcon.className = 'fas fa-user-circle';
+        }
+      }
+
+      function logout() {
+        document.getElementById('login-form').reset();
+        updateAuthStatus(false);
+        navigateTo('login');
+        updateProgressSteps(1);
+        if (countdownInterval) clearInterval(countdownInterval);
+      }
+
+      function navigateTo(pageKey) {
+        Object.values(pages).forEach(page => page.classList.remove('active'));
+        pages[pageKey].classList.add('active');
+        currentPage = pageKey;
+      }
+
+      function updateProgressSteps(activeStep) {
+        Object.values(steps).forEach(step => step.classList.remove('active', 'completed'));
+        for (let i = 1; i <= 5; i++) {
+          const step = steps[`step${i}`];
+          if (i < activeStep) step.classList.add('completed');
+          if (i === activeStep) step.classList.add('active');
+        }
+      }
+
+      // ========== VOTING LOGIC ==========
+      function initVoting() {
+        // Candidate click logic
+        document.querySelectorAll('.candidate-card').forEach(card => {
+          card.addEventListener('click', () => {
+            const parent = card.closest('.portfolio-section');
+            parent.querySelectorAll('.candidate-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            btnNext.disabled = false;
+          });
+        });
+
+        btnNext.addEventListener('click', () => {
+          if (!isCandidateSelected()) {
+            alert("Please select a candidate before continuing.");
+            return;
+          }
+          if (currentPortfolioIndex < totalSteps - 1) {
+            currentPortfolioIndex++;
+            updatePortfolioUI();
+          } else {
+            navigateTo('confirm');
+            updateProgressSteps(4);
+            buildVoteSummary();
+          }
+        });
+
+        btnPrev.addEventListener('click', () => {
+          if (currentPortfolioIndex > 0) {
+            currentPortfolioIndex--;
+            updatePortfolioUI();
+          }
+        });
+      }
+
+      function isCandidateSelected() {
+        return portfolios[currentPortfolioIndex].querySelector('.candidate-card.selected') !== null;
+      }
+
+      function updatePortfolioUI() {
+        portfolios.forEach((p, i) => p.classList.toggle('active', i === currentPortfolioIndex));
+        portfolioNames.forEach((name, i) => name.classList.toggle('active', i === currentPortfolioIndex));
+
+        const percent = ((currentPortfolioIndex + 1) / totalSteps) * 100;
+        progressFill.style.width = percent + '%';
+        currentStepText.textContent = currentPortfolioIndex + 1;
+
+        btnPrev.disabled = currentPortfolioIndex === 0;
+        btnNext.textContent = currentPortfolioIndex === totalSteps - 1 ? 'Submit Votes' : 'Next Portfolio';
+        btnNext.disabled = !isCandidateSelected();
+      }
+
+      // ========== CONFIRMATION ==========
+      function buildVoteSummary() {
+        const summary = document.getElementById('vote-summary');
+        summary.innerHTML = '';
+        portfolios.forEach(portfolio => {
+          const selected = portfolio.querySelector('.candidate-card.selected');
+          if (!selected) return;
+
+          const portfolioTitle = portfolio.dataset.portfolio;
+          const name = selected.querySelector('.candidate-name').textContent;
+          const avatar = selected.querySelector('.candidate-avatar').src;
+
+          const div = document.createElement('div');
+          div.style.marginBottom = '1rem';
+          div.innerHTML = `
+          <strong>${portfolioTitle}</strong>
+          <div style="display:flex;align-items:center;margin-top:0.5rem;">
+            <img src="${avatar}" style="width:40px;height:40px;border-radius:50%;margin-right:1rem;" />
+            <span>${name}</span>
+          </div>
+        `;
+          summary.appendChild(div);
+        });
+      }
+
+      // ========== LOGOUT COUNTDOWN ==========
+      function startLogoutCountdown() {
+        const countdownText = document.getElementById('countdown');
+        countdownText.textContent = logoutTimer;
+        countdownInterval = setInterval(() => {
+          logoutTimer--;
+          countdownText.textContent = logoutTimer;
+          if (logoutTimer <= 0) {
+            clearInterval(countdownInterval);
+            logout();
+          }
+        }, 1000);
+      }
+    });
+  </script>
+
+
+
+</body>
+
+</html>
